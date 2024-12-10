@@ -24,12 +24,14 @@ while IFS='=' read -r key value; do
     fi
 done < <(grep -v '^#' "$envFile")
 
+# Default to localhost if server is not set
+databaseServer=${databaseServer:-localhost}
+
 # Check if all necessary variables are set
-if [[ -z $databaseClass || -z $databaseName || -z $databaseServer || -z $databaseUsername || -z $databasePassword ]]; then
+if [[ -z $databaseClass || -z $databaseName || -z $databaseUsername || -z $databasePassword ]]; then
     echo "Error: Missing required database information in .env file."
     exit 1
 fi
 
-# Construct and output the mysql command
-mysql -u $databaseUsername -p$databasePassword -h $databaseServer -A $databaseNames
-
+# Construct and execute the mysql command
+mysql -u "$databaseUsername" -p"$databasePassword" -h "$databaseServer" -A "$databaseName"
