@@ -9,18 +9,26 @@ if [[ ! -f $envFile ]]; then
     exit 1
 fi
 
+# Function to trim quotes and spaces from a string
+trim_quotes_and_spaces() {
+    echo "$1" | sed -e 's/^ *//' -e 's/ *$//' -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//"
+}
+
 # Load variables from the .env file
 while IFS='=' read -r key value; do
-    if [[ $key == "SS_DATABASE_CLASS" ]]; then
-        databaseClass=$value
-    elif [[ $key == "SS_DATABASE_NAME" ]]; then
+    value=$(trim_quotes_and_spaces "$value") # Trim quotes and spaces
+    if [[ $key == "SS_DATABASE_NAME" ]]; then
         databaseName=$value
+        echo "Connecting to database $databaseName"
     elif [[ $key == "SS_DATABASE_SERVER" ]]; then
         databaseServer=$value
+        echo "Server: $databaseServer"
     elif [[ $key == "SS_DATABASE_USERNAME" ]]; then
         databaseUsername=$value
+        echo "Username: $databaseUsername"
     elif [[ $key == "SS_DATABASE_PASSWORD" ]]; then
         databasePassword=$value
+        echo "Password: ******"
     fi
 done < <(grep -v '^#' "$envFile")
 
@@ -28,7 +36,7 @@ done < <(grep -v '^#' "$envFile")
 databaseServer=${databaseServer:-localhost}
 
 # Check if all necessary variables are set
-if [[ -z $databaseClass || -z $databaseName || -z $databaseUsername || -z $databasePassword ]]; then
+if [[ -z $databaseName || -z $databaseUsername || -z $databasePassword ]]; then
     echo "Error: Missing required database information in .env file."
     exit 1
 fi
