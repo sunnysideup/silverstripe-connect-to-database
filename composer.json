@@ -28,7 +28,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "bin": [
-    "bin/sake-connect-to-database.sh"
+    "bin/sake-connect-to-database"
   ],
   "authors": [
     {
