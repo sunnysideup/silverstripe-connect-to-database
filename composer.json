@@ -1,6 +1,6 @@
 {
   "name": "sunnysideup/connect-to-database",
-  "description": "Connect to the database using the command line.",
+  "description": "Connect to the database using the command line using the .env file for information.",
   "type": "silverstripe-vendormodule",
   "keywords": [
     "database",
